@@ -11,12 +11,12 @@ Purpose: Implementing the required functions for Question 1 */
 
 //////////////////////////////////////////////////////////////////////////////////
 
-typedef struct _listnode{
+typedef struct _listnode{ // 파이썬에서 Node class
 	int item;
 	struct _listnode *next;
 } ListNode;			// You should not change the definition of ListNode
 
-typedef struct _linkedlist{
+typedef struct _linkedlist{ // 파이썬에서 LinkedList class
 	int size;
 	ListNode *head;
 } LinkedList;			// You should not change the definition of LinkedList
@@ -27,56 +27,56 @@ typedef struct _linkedlist{
 //You should not change the prototype of this function
 int insertSortedLL(LinkedList *ll, int item);
 
-void printList(LinkedList *ll);
-void removeAllItems(LinkedList *ll);
-ListNode *findNode(LinkedList *ll, int index);
-int insertNode(LinkedList *ll, int index, int value);
-int removeNode(LinkedList *ll, int index);
+void printList(LinkedList *ll); // 리스트 출력
+void removeAllItems(LinkedList *ll); // 리스트 전체 삭제
+ListNode *findNode(LinkedList *ll, int index); // 특정 위치 노드 찾기
+int insertNode(LinkedList *ll, int index, int value); // 특정 위치에 새 노드 넣기
+int removeNode(LinkedList *ll, int index); // 특정 위치 노드 삭제
 
 
 //////////////////////////// main() //////////////////////////////////////////////
 
-int main()
+int main() // 프로그램의 시작점
 {
-	LinkedList ll;
-	int c, i, j;
+	LinkedList ll; // 연결 리스트 전체
+	int c, i, j; // c : 메뉴 선택 번호, i : 사용자가 넣고 싶은 숫자, j : 그 숫자가 들어간 위치
 	c = 1;
 
-	//Initialize the linked list 1 as an empty linked list
+	//Initialize the linked list 1 as an empty linked list (리스트 초기화)
 	ll.head = NULL;
 	ll.size = 0;
 
-	printf("1: Insert an integer to the sorted linked list:\n");
-	printf("2: Print the index of the most recent input value:\n");
-	printf("3: Print sorted linked list:\n");
-	printf("0: Quit:");
+	printf("1: Insert an integer to the sorted linked list:\n"); // 숫자 넣기
+	printf("2: Print the index of the most recent input value:\n"); // 방금 넣은 숫자의 위치 출력
+	printf("3: Print sorted linked list:\n"); // 리스트 출력
+	printf("0: Quit:"); // 종료
 
 	while (c != 0)
 	{
 		printf("\nPlease input your choice(1/2/3/0): ");
-		scanf("%d", &c);
+		scanf("%d", &c); // 메뉴 선택 받기
 
 		switch (c)
 		{
-		case 1:
+		case 1: // 숫자 넣기
 			printf("Input an integer that you want to add to the linked list: ");
-			scanf("%d", &i);
-			j = insertSortedLL(&ll, i);
+			scanf("%d", &i); // i를 입력 받기
+			j = insertSortedLL(&ll, i); // 이 숫자를 알맞는 자리에 넣어줘 -> j에게 돌려줌
 			printf("The resulting linked list is: ");
-			printList(&ll);
+			printList(&ll); // 현재 리스트 출력
 			break;
-		case 2:
-			printf("The value %d was added at index %d\n", i, j);
+		case 2: // 방금 넣은 숫자의 위치 출력
+			printf("The value %d was added at index %d\n", i, j); // 마지막 넣은 i가 j 인덱스에 들어갔습니다.
 			break;
-		case 3:
+		case 3: // 리스트 출력
 			printf("The resulting sorted linked list is: ");
-			printList(&ll);
-			removeAllItems(&ll);
+			printList(&ll); // 리스트 출력
+			removeAllItems(&ll); // 리스트 전체 삭제 (테스트가 끝난 뒤 정리하려고 그런 듯)
 			break;
-		case 0:
-			removeAllItems(&ll);
+		case 0: // 종료
+			removeAllItems(&ll); // 리스트 전체 삭제
 			break;
-		default:
+		default: // 이상한 숫자 넣으면
 			printf("Choice unknown;\n");
 			break;
 		}
@@ -88,14 +88,31 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int insertSortedLL(LinkedList *ll, int item)
+int insertSortedLL(LinkedList *ll, int item) // 몇 번째 자리에 넣을지 찾는 함수
 {
 	/* add your code here */
+    int index = 0;
+    ListNode *cur = ll -> head;
+
+    while (cur && cur -> item < item) { 
+        cur = cur -> next ;
+        index += 1; 
+    }
+
+    if (cur != NULL) {
+        if (cur -> item == item) {
+            return -1;
+        }
+    }
+
+    insertNode(ll, index, item);
+
+    return index;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void printList(LinkedList *ll){
+void printList(LinkedList *ll){ 
 
 	ListNode *cur;
 	if (ll == NULL)
