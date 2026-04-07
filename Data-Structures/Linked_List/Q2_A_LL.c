@@ -104,6 +104,37 @@ int main()
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
     /* add your code here */
+    ListNode *p1 = NULL;
+    ListNode *p2 = NULL;
+    ListNode *next1 = NULL;
+    ListNode *next2 = NULL;
+
+    if (ll1 == NULL || ll2 == NULL) {
+        return;
+    }
+
+    p1 = ll1->head;
+    p2 = ll2->head;
+
+    if (p1 == NULL || p2 == NULL) {
+        return;
+    }
+
+    int moved = 0;
+
+    while (p1 != NULL && p2 != NULL) {
+        next1 = p1->next;
+        next2 = p2->next;
+        p1->next = p2;
+        p2->next = next1;
+        p1 = next1;
+        p2 = next2;
+        moved++;
+    }
+
+    ll2->head = p2;
+    ll1->size += moved;
+    ll2->size -= moved;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +201,7 @@ int insertNode(LinkedList *ll, int index, int value){
 	if (ll == NULL || index < 0 || index > ll->size + 1)
 		return -1;
 
-	// If empty list or inserting first node, need to update head pointer
+	// If empty list or inserting first node, need to update head pointer (맨 앞 삽입)
 	if (ll->head == NULL || index == 0){
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
@@ -182,7 +213,7 @@ int insertNode(LinkedList *ll, int index, int value){
 
 
 	// Find the nodes before and at the target position
-	// Create a new node and reconnect the links
+	// Create a new node and reconnect the links (중간에 삽입)
 	if ((pre = findNode(ll, index - 1)) != NULL){
 		cur = pre->next;
 		pre->next = malloc(sizeof(ListNode));
